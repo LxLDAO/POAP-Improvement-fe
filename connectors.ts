@@ -3,10 +3,19 @@ import { InjectedConnector } from '@web3-react/injected-connector'
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
 
 import { INFURA_PREFIXES } from './utils'
+import { ChainId } from '@uniswap/sdk'
+
+const supportedChainIds = [
+  // ChainId.MAINNET,
+  // ChainId.ROPSTEN,
+  ChainId.RINKEBY,
+  // ChainId.GÖRLI,
+  // ChainId.KOVAN
+]
 
 export function getNetwork(defaultChainId = 1): NetworkConnector {
   return new NetworkConnector({
-    urls: [1, 3, 4, 5, 42].reduce(
+    urls: supportedChainIds.reduce(
       (urls, chainId) =>
         Object.assign(urls, {
           [chainId]: `https://${INFURA_PREFIXES[chainId]}.infura.io/v3/${process.env.INFURA_PROJECT_ID}`,
@@ -17,7 +26,7 @@ export function getNetwork(defaultChainId = 1): NetworkConnector {
   })
 }
 
-export const injected = new InjectedConnector({ supportedChainIds: [1, 3, 4, 5, 42] })
+export const injected = new InjectedConnector({ supportedChainIds })
 
 export const walletconnect = new WalletConnectConnector({
   rpc: {
