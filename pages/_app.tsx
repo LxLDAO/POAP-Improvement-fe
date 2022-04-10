@@ -38,7 +38,7 @@ function FunctionalApp({ Component }: { Component: NextComponentType }): JSX.Ele
       <Provider>
         <Layout>
           {error ? (
-            <Error />
+            <Error error={error} />
           ) : typeof chainId !== 'number' ? (
             <Loading />
           ) : typeof requiredChainId === 'number' && chainId !== requiredChainId ? (

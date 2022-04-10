@@ -1,6 +1,16 @@
 import { Flex, Stack, Text } from '@chakra-ui/core'
+import SwitchToChain from './SwitchToChain'
 
-export default function Error(): JSX.Element {
+type ErrorProps = {
+  error?: Error
+}
+
+export default function Error({ error }: ErrorProps): JSX.Element {
+  console.log('🚀 ~ file: Error.tsx ~ line 10 ~ Error ~ error', error)
+  if (error && error.name === 'UnsupportedChainIdError') {
+    return <SwitchToChain requiredChainId={4} />
+  }
+
   return (
     <Flex flexGrow={1} alignItems="center" justifyContent="center">
       <Stack direction="column" alignItems="center">

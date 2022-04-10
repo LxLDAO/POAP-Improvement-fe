@@ -90,7 +90,7 @@ export default function Settings({ isOpen, onClose }: { isOpen: boolean; onClose
               <Text>Dark Mode</Text>
               <Switch isChecked={colorMode === 'dark'} onChange={toggleColorMode} />
             </Stack>
-            <Stack direction="row" justify="space-between">
+            {/* <Stack direction="row" justify="space-between">
               <Text>Approve Max</Text>
               <Switch isChecked={approveMax} onChange={toggleApproveMax} />
             </Stack>
@@ -141,7 +141,7 @@ export default function Settings({ isOpen, onClose }: { isOpen: boolean; onClose
                   <Text>{(slippage / 100).toFixed(slippage === 0 ? 0 : 1)}%</Text>
                 </Stack>
               </Stack>
-            </Stack>
+            </Stack> */}
           </Stack>
         </ModalBody>
         <ModalFooter justifyContent={permalink === null ? 'flex-end' : 'space-between'}>
@@ -164,14 +164,14 @@ export default function Settings({ isOpen, onClose }: { isOpen: boolean; onClose
             </Button>
           )}
 
-          <Link
+          {/* <Link
             href={`https://github.com/NoahZinsmeister/hypertext/tree/${process.env.COMMIT_SHA}`}
             target="_blank"
             rel="noopener noreferrer"
             color="blue.500"
           >
             {process.env.COMMIT_SHA?.slice(0, 7)}
-          </Link>
+          </Link> */}
         </ModalFooter>
       </ModalContent>
     </Modal>

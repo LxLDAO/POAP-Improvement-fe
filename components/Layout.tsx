@@ -1,5 +1,5 @@
 import { ReactNode } from 'react'
-import { Flex, IconButton, useDisclosure, Badge, LightMode, Stack, Box, Radio } from '@chakra-ui/core'
+import { Flex, IconButton, useDisclosure, Badge, LightMode, Stack, Box, Radio, Button } from '@chakra-ui/core'
 import { useWeb3React } from '@web3-react/core'
 import dynamic from 'next/dynamic'
 
@@ -49,19 +49,47 @@ export default function Layout({ children }: { children: ReactNode }): JSX.Eleme
         maxHeight="100vh"
       >
         <Flex justifyContent="space-between" flexShrink={0} overflowX="auto" p="1rem">
-          <Stack spacing={0} direction="row">
+          <Stack spacing={2} direction="row" alignItems="center">
             <IconButton icon="settings" variant="ghost" onClick={onOpenSettings} aria-label="Settings" />
-            {!!USDETHPrice && (
+
+            <Button
+              as="a"
+              {...{
+                href: `./`,
+              }}
+              variantColor={'green'}
+              p="0.5rem"
+              fontSize="lg"
+              lineHeight={1}
+              height="min-content"
+            >
+              🎉 Issue Your Event
+            </Button>
+
+            <Button
+              as="a"
+              {...{
+                href: `./claim`,
+              }}
+              variantColor={'green'}
+              p="0.5rem"
+              fontSize="lg"
+              lineHeight={1}
+              height="min-content"
+            >
+              🎁 Claim Your NFT
+            </Button>
+            {/* {!!USDETHPrice && (
               <Radio
                 isChecked={showUSD}
-                onChange={() => {}} // eslint-disable-line @typescript-eslint/no-empty-function
+                // onChange={() => setShowUSD((ps) => !ps)} // eslint-disable-line @typescript-eslint/no-empty-function
                 onMouseEnter={() => setShowUSD(true)}
                 onMouseLeave={() => setShowUSD(false)}
                 ml="0.5rem"
               >
                 Show $ values
               </Radio>
-            )}
+            )} */}
           </Stack>
           <Account triedToEagerConnect={triedToEagerConnect} />
         </Flex>

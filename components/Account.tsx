@@ -1,5 +1,5 @@
 import { useState, useEffect, Suspense, useRef, useLayoutEffect } from 'react'
-import { Button, Stack, Box, IconButton } from '@chakra-ui/core'
+import { Button, Stack, Box, IconButton, ButtonProps } from '@chakra-ui/core'
 import { Web3Provider } from '@ethersproject/providers'
 import { useWeb3React } from '@web3-react/core'
 import { UserRejectedRequestError } from '@web3-react/injected-connector'
@@ -39,7 +39,12 @@ function ETHBalance(): JSX.Element {
   )
 }
 
-export default function Account({ triedToEagerConnect }: { triedToEagerConnect: boolean }): JSX.Element | null {
+type AccountProps = {
+  triedToEagerConnect: boolean
+  buttonProps?: Omit<React.ComponentProps<typeof Button>, 'children'>
+}
+
+export default function Account({ triedToEagerConnect, buttonProps }: AccountProps): JSX.Element | null {
   const { active, error, activate, library, chainId, account, setError } = useWeb3React<Web3Provider>()
 
   // initialize metamask onboarding
@@ -90,33 +95,30 @@ export default function Account({ triedToEagerConnect }: { triedToEagerConnect: 
   } else if (!triedToEagerConnect) {
     return null
   } else if (typeof account !== 'string') {
-    return (
-      <Box>
-        {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-        {MetaMaskOnboarding.isMetaMaskInstalled() || (window as any)?.ethereum || (window as any)?.web3 ? (
-          <Button
-            isLoading={connecting}
-            leftIcon={MetaMaskOnboarding.isMetaMaskInstalled() ? ('metamask' as 'edit') : undefined}
-            onClick={(): void => {
-              setConnecting(true)
-              activate(injected, undefined, true).catch((error) => {
-                // ignore the error if it's a user rejected request
-                if (error instanceof UserRejectedRequestError) {
-                  setConnecting(false)
-                } else {
-                  setError(error)
-                }
-              })
-            }}
-          >
-            {MetaMaskOnboarding.isMetaMaskInstalled() ? 'Connect to MetaMask' : 'Connect to Wallet'}
-          </Button>
-        ) : (
-          <Button leftIcon={'metamask' as 'edit'} onClick={() => onboarding.current?.startOnboarding()}>
-            Install Metamask
-          </Button>
-        )}
-      </Box>
+    /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+    return MetaMaskOnboarding.isMetaMaskInstalled() || (window as any)?.ethereum || (window as any)?.web3 ? (
+      <Button
+        isLoading={connecting}
+        leftIcon={MetaMaskOnboarding.isMetaMaskInstalled() ? ('metamask' as 'edit') : undefined}
+        onClick={(): void => {
+          setConnecting(true)
+          activate(injected, undefined, true).catch((error) => {
+            // ignore the error if it's a user rejected request
+            if (error instanceof UserRejectedRequestError) {
+              setConnecting(false)
+            } else {
+              setError(error)
+            }
+          })
+        }}
+        {...buttonProps}
+      >
+        {MetaMaskOnboarding.isMetaMaskInstalled() ? 'Connect to MetaMask' : 'Connect to Wallet'}
+      </Button>
+    ) : (
+      <Button leftIcon={'metamask' as 'edit'} onClick={() => onboarding.current?.startOnboarding()} {...buttonProps}>
+        Install Metamask
+      </Button>
     )
   }
 
@@ -172,6 +174,7 @@ export default function Account({ triedToEagerConnect }: { triedToEagerConnect: 
           target: '_blank',
           rel: 'noopener noreferrer',
         }}
+        {...buttonProps}
       >
         {ENSName || `${shortenHex(account, 4)}`}
       </Button>
